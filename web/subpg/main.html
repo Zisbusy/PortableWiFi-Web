@@ -1,0 +1,286 @@
+<style>
+	.homebox {
+		padding: 25px 20px;
+		border-radius: 10px;
+		background-color: #fff;
+		box-shadow: 0px 0px 10px 0px #0808080f;
+		margin: 20px 0 20px 0;
+	}
+
+	#home_internet {
+
+	}
+	#homewifidevice {
+		margin: 30px 0 20px 0;
+	}
+	#home_internet .item_icon_connect {
+		height: 195px;
+		background: url(../pic/new/surfing1.png) center center no-repeat;
+		transform: scale(0.5);
+		transition: all ease-in .2s;
+	}
+	#home_internet .item_icon_disconnect,
+	#home_internet .internetinfo {
+		height: 195px;
+	}
+	#home_internet .item_icon_disconnect {
+		background: url(../pic/new/surfing2.png) center center no-repeat;
+		transform: scale(0.5);
+		transition: all ease-in .2s;
+	}
+	#home_internet .internetinfo {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	.intitle {
+		font-size: 14px;
+		display: flex;
+		align-items: center;
+	}
+	.intitle::before {
+		content: '';
+		border: 1px solid #ee7060;
+		display: block;
+		width: 3px;
+		height: 16px;
+		border-radius: 4px;
+		background: #ee7060;
+		margin-right: 12px;
+	}
+	#homewifidevice .connectwifiset img{
+		width: 18px;
+		position: absolute;
+		top: 0;
+		right: 23px;
+	}
+	#homewifidevice #h_wireless_device{
+		display: flex;
+		align-items: baseline;
+		justify-content: center;
+		margin-top: 25px;
+	}
+	
+</style>
+
+
+
+
+
+<div class="row margin-top-20 homebox" id="home_internet">
+	<div class="col-xs-6">
+		<span class="intitle" data-trans="net_surfing"></span>
+		<div class="internetbox">
+			<div class="col-xs-6" data-bind=" css: {'item_icon_connect': cStatus()== 1, 'item_icon_disconnect': cStatus() != 1}"></div>
+			<div class="col-xs-6 internetinfo">	
+				<p></p>
+				<p>上行速率: <span data-bind="text: up_Speed"></span></p>
+				<p>下行速率: <span data-bind="text: down_Speed"></span></p>
+				<p>连接时间: <span data-bind="text: connected_Time"></span></p>
+			</div>
+		</div>
+		<a id="h_connect_btn" href="javascript: void(0)" data-bind="visible: canConnect() && isShowHomeConnect(), click: connectHandler , css: {'h_connect_on': cStatus()== 1, 'h_connect_off': cStatus() != 1}" style="display: none;"></a>
+	</div>
+	<div class="col-xs-6">
+		<span class="intitle" data-trans="">SIM 卡信息</span>
+		<div class="simbox" style="margin: 20px 0 0 0;">
+			<p class="col-xs-5" data-trans="sim_serial_number"></p>
+			<p class="col-xs-7" data-bind="text: simSerialNumber"></p>
+			<p class="col-xs-5" data-trans="imei"></p>
+			<p class="col-xs-7" data-bind="text: imei"></p>
+			<p class="col-xs-5" data-trans="imsi"></p>
+			<p class="col-xs-7" data-bind="text: imsi"></p>
+			<p class="col-xs-5" data-trans="reside_band"></p>
+			<p class="col-xs-7" data-bind="text: resideBand"></p>
+			<p class="col-xs-5" data-trans="signal_strength_label"></p>
+			<p class="col-xs-7" id="fresh_signal_strength"></p>
+			<p class="col-xs-5" data-trans="wan_ip_address"></p>
+			<p class="col-xs-7" data-bind="text: wanIpAddress"></p>
+			<p class="col-xs-5" data-trans="ipv6_wan_ip_address"></p>
+			<p class="col-xs-7" data-bind="text: ipv6WanIpAddress"></p>
+		</div>
+	</div>
+</div>
+
+
+<div class="row margin-top-20 homebox" id="homewifidevice">
+	<div class="col-xs-6">
+		<span class="intitle" data-trans="wireless_access_device"></span>
+		
+
+		<div id="h_wireless_device">
+			<span data-bind="text: wirelessDeviceNum" style="font-size:70px;color: #3ad6a2;"></span>
+			<sub data-trans="device_unit" style="font-size: 14px;"></sub>
+			
+		</div>
+		<a class="connectwifiset" title="管理连接设备" href="#conn_device"><img src="pic/new/wls.png"></a>
+	</div>
+	<div class="col-xs-6">
+		<span class="intitle" data-trans="">WIFI 信息</span>
+		<div class="simbox" style="margin: 20px 0 0 0;">
+			<p class="col-xs-5" data-trans="network_name"></p>
+			<p class="col-xs-7" data-bind="text: ssid"></p>
+			<p class="col-xs-5" data-trans="max_access_num"></p>
+			<p class="col-xs-7" data-bind="text: maxAccessNum"></p>
+			<p class="col-xs-5" data-trans="ip_address"></p>
+			<p class="col-xs-7" data-bind="text: ipAddress"></p>
+			<p class="col-xs-5" data-trans="wifi_range"></p>
+			<p class="col-xs-7" data-trans="wifi_long_mode"></p>
+			<p class="col-xs-5" data-trans="detail_info"></p>
+			<p class="col-xs-7"><a style="color: #434343;" href="javascript: void(0)" id="showDetailInfo" tabindex="0">--></a></p>
+		</div>
+	</div>
+	
+</div>
+
+
+
+
+
+
+	
+	
+	
+	<div class="row margin-top-20 label-font-normal margin-bottom-20">
+
+
+
+
+
+		
+		<div class="text-center traffic_control_container" data-bind="visible: showTraffic()">
+			<h4 data-trans="traffic_data_plan" style="font-size:14px;text-align:right;padding-right:15px"></h4>
+			<div style="display:inline-block">
+				<div id="traffic_graphic" style="width: 200px; height: 165px; visibility: visible;"></div>
+			</div>		
+			<div style="text-align: left;padding-left:20px;font-size:18px">
+				<span style="background-color: #8CC916;" class="color_block"></span>
+				<span data-trans="traffic_used" class="color_block_desc"></span>
+				<span class="color_block_desc">:</span>
+				<span data-bind="text: trafficUsed" class="color_block_desc"></span>
+			</div>
+			<div class="statistics_list">
+				<ul>
+					<li><a href="#flow_ctl">
+						<div data-bind="visible: trafficAlertEnable">
+							<span data-bind="text: trafficLimited" class="line-height-20"></span>
+							<span data-trans="traffic_limit_data" class="line-height-20"></span>
+						</div>
+						<div data-bind="visible: trafficAlertEnable() == false">
+							<div data-trans="traffic_not_set_limited" class="line-height-20"></div>
+						</div>
+					</a></li>
+				</ul>
+			</div>
+		</div>	
+	</div>
+	
+	<script type="text/x-jquery-tmpl" id="detailInfoTmpl">
+	<div class="row">
+		<label class="col-xs-6" data-trans="sim_serial_number" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= simSerialNumber %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="ICCID" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= iccid %></label>
+	</div>
+	<div class="row">
+		<label data-trans="imei" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= imei %></label>
+	</div>
+	<div class="row">
+		<label data-trans="imsi" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= imsi %></label>
+	</div>
+	<div class="row">
+		<label data-trans="signal_strength_label" class="col-xs-6"></label>
+		<label class="col-xs-6" id="popoverSignalTxt"><%= signal %></label>
+	</div>
+	<% if(hasWifi){ %>
+	<div class="row">
+		<label data-trans="<%= showMultiSsid ? 'network_name_ssid1': 'network_name' %>" class="col-xs-6"></label>
+		<label style="word-wrap: break-word; word-break: break-all;" class="col-xs-6"><%= ssid %></label>
+	</div>
+	<div class="row">
+		<label data-trans="<%= showMultiSsid ? 'max_access_num_ssid1': 'max_access_num' %>" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= max_access_num %></label>
+	</div>
+		<% if(showMultiSsid){ %>
+			<div class="row">
+				<label data-trans="network_name_ssid2" class="col-xs-6"></label>
+				<label style="word-wrap: break-word; word-break: break-all;" class="col-xs-6"><%= m_ssid %></label>
+			</div>
+			<div class="row">
+				<label data-trans="max_access_num_ssid2" class="col-xs-6"></label>
+				<label class="col-xs-6"><%= m_max_access_num %></label>
+			</div>
+		<% } %>
+	<div class="row">
+		<label data-trans="wifi_range" class="col-xs-6"></label>
+		<label data-trans="<%= wifi_long_mode %>" class="col-xs-6"></label>
+	</div>
+	<% } %>
+	<div class="row">
+		<label data-trans="lan_domain" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= lanDomain %></label>
+	</div>
+	<div class="row">
+		<label data-trans="ip_address" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= ipAddress %></label>
+	</div>
+	<% if(showMacAddress){ %>
+	<div class="row">
+		<label data-trans="mac_address" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= macAddress %></label>
+	</div>
+	<% } %>
+	<% if(showIpv4WanIpAddr){ %>
+	<div class="row">
+		<label data-trans="wan_ip_address" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= wanIpAddress %></label>
+	</div>
+	<% } %>
+	<% if(showIpv6WanIpAddr){ %>
+	<div class="row">
+		<label data-trans="ipv6_wan_ip_address" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= ipv6WanIpAddress %></label>
+	</div>
+	<% } %>
+	<div class="row">
+		<label data-trans="software_version" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= sw_version %></label>
+	</div>
+	<div class="row">
+		<label data-trans="hardware_version" class="col-xs-6"></label>
+		<label class="col-xs-6"><%= hw_version %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="rsrp"></label>
+		<label class="col-xs-6"><%= rsrp %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="rsrq"></label>
+		<label class="col-xs-6"><%= rsrq %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="rssi"></label>
+		<label class="col-xs-6"><%= rssi %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="sinr"></label>
+		<label class="col-xs-6"><%= sinr %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="cellid"></label>
+		<label class="col-xs-6"><%= cellid %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="pci"></label>
+		<label class="col-xs-6"><%= pci %></label>
+	</div>
+	<div class="row">
+		<label class="col-xs-6" data-trans="reside_band"></label>
+		<label class="col-xs-6"><%= reside_band %></label>
+	</div>
+	</script>
+	
