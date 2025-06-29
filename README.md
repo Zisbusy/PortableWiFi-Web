@@ -1,6 +1,7 @@
 # PortableWiFi-Web
 随身WiFi 后台管理界面    
 海尔 F231ZC
+![IMG_3732](https://github.com/user-attachments/assets/1f955b06-ba76-48f4-8f62-66939de73cb1)
 
 ## 打包过程
 
